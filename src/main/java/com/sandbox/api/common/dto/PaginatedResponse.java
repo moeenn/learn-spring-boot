@@ -1,4 +1,4 @@
-package com.sandbox.api.modules.user;
+package com.sandbox.api.common.dto;
 
 import java.util.List;
 

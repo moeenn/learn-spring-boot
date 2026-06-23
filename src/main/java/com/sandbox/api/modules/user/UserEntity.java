@@ -20,6 +20,9 @@ public class UserEntity {
     @Column(nullable=false)
     public String name;
 
+    @Column(nullable = false)
+    public UserRole role;
+
     @Column(nullable=false)
     public String password;
 
@@ -31,19 +34,21 @@ public class UserEntity {
 
     public UserEntity() {}
 
-    public UserEntity(String id, String email, String name, String password) {
+    public UserEntity(String id, String email, String name, UserRole role, String password) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.role = role;
         this.password = password;
         this.createdAt = LocalDateTime.now();
         this.deletedAt = null;
     }
 
-    public UserEntity(String email, String name, String password) {
+    public UserEntity(String email, String name, UserRole role, String password) {
         this.id = UUID.randomUUID().toString();
         this.email = email;
         this.name = name;
+        this.role = role;
         this.password = password;
         this.createdAt = LocalDateTime.now();
         this.deletedAt = null;

@@ -1,4 +1,6 @@
-package com.sandbox.api.modules.user;
+package com.sandbox.api.modules.user.dto;
+
+import com.sandbox.api.modules.user.UserEntity;
 
 public record UserDTO(
         String id,

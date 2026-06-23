@@ -19,17 +19,18 @@ public class UserService {
         return userRepo.findById(id);
     }
 
-    public List<UserEntity> listAll() {
-        return userRepo.findAll();
-    }
-
     public List<UserEntity> list(int limit, int offset) {
         return userRepo.listPaginated(limit, offset);
     }
 
-    public void addNew(String email, String name, String password) {
-        var newUser = new UserEntity(email, name, password);
+    public void addNew(String email, String name, UserRole role, String password) {
+        var newUser = new UserEntity(email, name, role, password);
         userRepo.save(newUser);
+    }
+
+    public void updateUser(String id, String email, String name, UserRole role, String password) {
+        var updatedUser = new UserEntity(id, email, name, role, password);
+        userRepo.save(updatedUser);
     }
 
     public void deleteUser(String id) {
