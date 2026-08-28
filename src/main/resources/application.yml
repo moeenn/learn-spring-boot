@@ -1,0 +1,25 @@
+server:
+  port: 5000
+
+spring:
+  application:
+    name: api
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dev  
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASS}
+    driver-class-name: org.postgresql.Driver
+    connection-fetch: lazy
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: false
+    locations: classpath:db/migration

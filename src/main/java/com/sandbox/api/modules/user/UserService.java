@@ -2,9 +2,9 @@ package com.sandbox.api.modules.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -28,7 +28,7 @@ public class UserService {
         userRepo.save(newUser);
     }
 
-    public void updateUser(String id, String email, String name, UserRole role, String password) {
+    public void updateUser(UUID id, String email, String name, UserRole role, String password) {
         var updatedUser = new UserEntity(id, email, name, role, password);
         userRepo.save(updatedUser);
     }
@@ -36,4 +36,4 @@ public class UserService {
     public void deleteUser(String id) {
         userRepo.deleteById(id);
     }
- }
+}

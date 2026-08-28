@@ -1,7 +1,7 @@
 package com.sandbox.api.modules.user;
 
 import com.sandbox.api.common.dto.PaginatedResponse;
-import com.sandbox.api.modules.user.dto.UserDTO;
+import com.sandbox.api.modules.user.dto.UserResponse;
 import com.sandbox.api.modules.user.dto.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -21,42 +22,41 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+    public ResponseEntity<UserResponse> findById(@PathVariable String id) {
         Optional<UserEntity> user = userService.findById(id);
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        var res = UserDTO.fromEntity(user.get());
+        var res = UserResponse.fromEntity(user.get());
         return ResponseEntity.ok(res);
     }
 
     @GetMapping
-    public ResponseEntity<PaginatedResponse<UserDTO>> listUsers(
-            @RequestParam(required=false) Integer limit,
-            @RequestParam(required=false) Integer offset
-            ) {
+    public ResponseEntity<PaginatedResponse<UserResponse>> listUsers(
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer offset) {
 
         int qLimit = limit == null ? 10 : limit;
         int qOffset = offset == null ? 0 : offset;
 
         List<UserEntity> users = userService.list(qLimit, qOffset);
-        List<UserDTO> userRes = users.stream().map(UserDTO::fromEntity).toList();
-        PaginatedResponse<UserDTO> res = new PaginatedResponse<>(userRes, users.size(), qLimit, qOffset);
+        List<UserResponse> userRes = users.stream().map(UserResponse::fromEntity).toList();
+        PaginatedResponse<UserResponse> res = new PaginatedResponse<>(userRes, users.size(), qLimit, qOffset);
         return ResponseEntity.ok(res);
     }
 
     @PostMapping()
     public ResponseEntity<?> createUser(@RequestBody UserUpdateRequest req) throws Exception {
         req.validate();
-        userService.addNew(req.email,req.name, req.role, req.password);
+        userService.addNew(req.email, req.name, req.role, req.password);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody UserUpdateRequest req) throws Exception {
+    public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UserUpdateRequest req) throws Exception {
         req.validate();
-        userService.updateUser(id, req.email,req.name, req.role, req.password);
+        userService.updateUser(id, req.email, req.name, req.role, req.password);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
