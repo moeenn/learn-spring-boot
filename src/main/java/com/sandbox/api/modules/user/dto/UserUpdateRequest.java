@@ -1,15 +1,31 @@
 package com.sandbox.api.modules.user.dto;
 
+import org.hibernate.validator.constraints.Length;
 import com.sandbox.api.modules.user.UserRole;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 public class UserUpdateRequest {
+    @NotBlank
+    @Email
     public String email;
+
+    @NotBlank
+    @Min(3)
     public String name;
+
+    @NotBlank
     public UserRole role;
+
+    @Length(min = 8)
     public String password;
+
+    @Length(min = 8)
     public String confirmPassword;
 
-    public UserUpdateRequest() {}
+    public UserUpdateRequest() {
+    }
 
     public UserUpdateRequest(String email, String name, UserRole role, String password, String confirmPassword) {
         this.email = email;
@@ -17,15 +33,5 @@ public class UserUpdateRequest {
         this.role = role;
         this.password = password;
         this.confirmPassword = confirmPassword;
-    }
-
-    public void validate() throws Exception {
-        if (this.role == UserRole.ADMIN) {
-            throw new Exception("cannot create admin accounts over API");
-        }
-
-        if (!this.password.equals(this.confirmPassword)) {
-            throw new Exception("password confirmation failed");
-        }
     }
 }

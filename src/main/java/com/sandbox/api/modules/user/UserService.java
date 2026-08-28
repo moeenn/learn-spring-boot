@@ -23,12 +23,22 @@ public class UserService {
         return userRepo.listPaginated(limit, offset);
     }
 
-    public void addNew(String email, String name, UserRole role, String password) {
+    public void addNew(String email, String name, UserRole role, String password, String confirmPassword)
+            throws Exception {
+        if (!password.equals(confirmPassword)) {
+            throw new Exception("password confirmation failed");
+        }
+
         var newUser = new UserEntity(email, name, role, password);
         userRepo.save(newUser);
     }
 
-    public void updateUser(UUID id, String email, String name, UserRole role, String password) {
+    public void updateUser(UUID id, String email, String name, UserRole role, String password, String confirmPassword)
+            throws Exception {
+        if (!password.equals(confirmPassword)) {
+            throw new Exception("password confirmation failed");
+        }
+
         var updatedUser = new UserEntity(id, email, name, role, password);
         userRepo.save(updatedUser);
     }

@@ -6,6 +6,7 @@ public record UserResponse(
         String id,
         String email,
         String name,
+        String role,
         String createdAt) {
 
     public static UserResponse fromEntity(UserEntity e) {
@@ -13,7 +14,7 @@ public record UserResponse(
                 e.id.toString(),
                 e.email,
                 e.name,
+                e.role.toString(),
                 e.createdAt.toString());
     }
-
 }

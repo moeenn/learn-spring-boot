@@ -3,6 +3,7 @@ package com.sandbox.api.modules.user;
 import com.sandbox.api.common.dto.PaginatedResponse;
 import com.sandbox.api.modules.user.dto.UserResponse;
 import com.sandbox.api.modules.user.dto.UserUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,16 +48,15 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createUser(@RequestBody UserUpdateRequest req) throws Exception {
-        req.validate();
-        userService.addNew(req.email, req.name, req.role, req.password);
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserUpdateRequest req) throws Exception {
+        userService.addNew(req.email, req.name, req.role, req.password, req.confirmPassword);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UserUpdateRequest req) throws Exception {
-        req.validate();
-        userService.updateUser(id, req.email, req.name, req.role, req.password);
+    public ResponseEntity<?> updateUser(@PathVariable UUID id, @Valid @RequestBody UserUpdateRequest req)
+            throws Exception {
+        userService.updateUser(id, req.email, req.name, req.role, req.password, req.confirmPassword);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
